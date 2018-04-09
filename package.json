@@ -1,0 +1,26 @@
+{
+  "name": "node.js-mysql1",
+  "version": "1.0.0",
+  "description": "Amazon like store",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jdeje002/node.js-MySQL1.git"
+  },
+  "keywords": [
+    "Node.js",
+    "MySQL"
+  ],
+  "author": "John De Jesus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jdeje002/node.js-MySQL1/issues"
+  },
+  "homepage": "https://github.com/Jdeje002/node.js-MySQL1#readme",
+  "dependencies": {
+    "mysql": "^2.15.0"
+  }
+}
