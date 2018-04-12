@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Jdeje002/node.js-MySQL1#readme",
   "dependencies": {
+    "inquirer": "^5.2.0",
     "mysql": "^2.15.0"
   }
 }
