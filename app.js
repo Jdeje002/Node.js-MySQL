@@ -7,46 +7,47 @@ var inquirer = require('inquirer')
 var mysql = require('mysql');
 
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'root',
-  database : 'bamazon',
+  host: 'localhost',
+  user: 'root',
+  password: 'root',
+  database: 'bamazon',
   socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock',
 });
- 
+
 connection.connect();
 
 var q = 'SELECT * FROM products'
 
 var v = {
-  id:0,
-  product_name:'',
-  department_name:'',
-  price:0,
-  stock_quantity:0,
+  id: 0,
+  product_name: '',
+  department_name: '',
+  price: 0,
+  stock_quantity: 0,
 }
 
 
-
-// function buy (){
-//   var q = `
-//   USE bamazon
-//   UPDATE products
-//   Select stock_quantity = --
-//   `
-//   connection.query(q,function (error, r) {
-
-
-//   })
-// }
- 
-connection.query(q,v, function (error, r) {
-  if (error){
+connection.query(q, v, function (error, r) {
+  if (error) {
     console.log(error)
-  } else if(r){
-    console.log(r)
-    //r[0].id
-    
+  } else if (r) {
+    console.log('======================')
+    console.log("Welcome!")
+    console.log('=====================')
+    for (var i = 0; i < r.length; i++) {
+      console.log('====================')
+      console.log("Id: " + r[i].id)
+      console.log(r[i].product_name)
+      console.log(r[i].department_name)
+      console.log('$ ' + r[i].price)
+      console.log("In Stock Now: " + r[i].stock_quantity)
+
+      console.log('====================')
+
+    }
+
+
+
     var pmpt = inquirer.createPromptModule()
     var questions = [
       {
@@ -60,65 +61,50 @@ connection.query(q,v, function (error, r) {
         message: "How many would you like?"
       },
     ]
-    pmpt(questions).then(answers =>{
-     //switch case 
-      console.log(answers.id)
-      console.log(answers.quantity)
-      console.log(r[answers.id].stock_quantity)
-
-      var userPick = answers.id + 1
-    
-      var uval = r[userPick].stock_quantity - answers.quantity 
-
-      var w =`
-     UPDATE products
-     SET stock_quantity = ${uval}
-     `
+    pmpt(questions).then(answers => {
 
 
-      connection.query(w,v, function (error, r){
+      // console.log(answers.id)
+      // console.log(answers.quantity)
 
-      })
+      var userPick = answers.id - 1
 
-    //  switch(answers.r[i].id){
-  
-    //     case 1 :
-        
-    //     break;
-    //     case 2 :
-        
-    //     break;
-    //     case 3 :
-        
-    //     break;
-    //     case 4 :
-        
-    //     break;
-    //     case 5 :
-        
-    //     break;
-    //     case 6:
-        
-    //     break;
-    //     case 7 :
-        
-    //     break;
-    //     case 8 :
-        
-    //     break;
-    //     case 9:
-        
-    //     break;
-    //     case 10 :
-        
-    //     break;
-    //   }
-    
+      // console.log(r[userPick].stock_quantity)
+      // console.log(userPick)
+
+      var updateValue = r[userPick].stock_quantity - answers.quantity
+
+      // console.log(updateValue)
+
+      var newTotal = 'UPDATE products SET ? WHERE ? ;'
+      var mode = [
+        {
+          stock_quantity: updateValue,
+
+        },
+        {
+          id: answers.id,
+        }
+      ]
+
+      if (updateValue <= 0) {
+        console.log('Insufficient quantity!')
+      } else {
+        connection.query(newTotal, mode, function (error, r) {
+          if (error) {
+            console.log(error)
+          } else if (r) {
+            console.log("Thank you for buying, ")
+            connection.end();
+
+          }
+
+        })
+      }
     })
   }
-});
- 
-connection.end();
+})
+
 
 
 
